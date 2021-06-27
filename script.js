@@ -1,163 +1,191 @@
-const screenPreviousCalculation = document.getElementById("previous-calculation");
-const screenCurrentCalculation = document.getElementById("current-calculation");
-const buttonOperands = document.querySelectorAll(".operand");
-const buttonOperator = document.querySelectorAll(".operator");
-const clearButton = document.getElementById("clear");
-const deleteButton = document.getElementById("delete");
-const equalButton = document.getElementById("equal");
+// Get elements
 
-let previousNumber = "";
-let currentNumber = "";
-let selectedOperator = undefined;
+const preState = document.getElementById("preState");
+const currState = document.getElementById("currState");
+const numberBtn = document.querySelectorAll(".number");
+const operatorBtn = document.querySelectorAll(".operator");
+const clearBtn = document.getElementById("clear");
+const deleteBtn = document.getElementById("delete");
+const equalBtn = document.getElementById("equal");
+
+// Define parameters
+
+let preNumber = "";
+let currNumber = "";
+let activeOperation = undefined;
+
+// Define math operations
+
+function add(a, b) {
+    return a + b
+};
+
+function subtract(a, b) {
+    return a - b
+};
+
+function multiply(a, b) {
+    return a * b
+};
+
+function divide(a, b) {
+
+    if (b === 0) {
+
+        alert('Denominator must be other than zero!');
+        clearAll();
+
+    } else {
+
+        return a / b
+
+    }
+}
+
+// Define main calc operation
 
 const operate = () => {
     let calculations;
-    if (!previousNumber || !currentNumber) {
+    if (!preNumber || !currNumber) {
         return;
     }
 
-    const prev = parseFloat(previousNumber);
-    const curr = parseFloat(currentNumber);
+    const prev = parseFloat(preNumber);
+    const curr = parseFloat(currNumber);
 
     if (isNaN(prev) || isNaN(curr)) {
         return;
+    } else if (activeOperation === "+") {
+        calculations = add(prev, curr);
+
+    } else if (activeOperation === "-") {
+        calculations = subtract(prev, curr);
+
+    } else if (activeOperation === "×") {
+        calculations = multiply(prev, curr);
+
+    } else {
+        divide(prev, curr)
+
     }
 
-    switch (selectedOperator) {
-        case "+":
-            calculations = prev + curr;
-            break;
-        case "-":
-            calculations = prev - curr;
-            break;
-        case "×":
-            calculations = prev * curr;
-            break;
-        case "÷":
-            if (curr === 0) {
-                alert("You can't divide by 0!");
-                clearAll();
-                return;
-            }
-            calculations = prev / curr;
-            break;
-        default:
-            return;
-    }
-
-    currentNumber = calculations.toString();
-    selectedOperator = undefined;
-    previousNumber = "";
+    currNumber = calculations.toString();
+    activeOperation = undefined;
+    preNumber = "";
 }
 
-const updateScreen = () => {
-    screenCurrentCalculation.innerText = currentNumber;
-    if (selectedOperator != null) {
-        screenPreviousCalculation.innerText = previousNumber + selectedOperator;
+// Update screen between calculations
+
+const updateStates = () => {
+    currState.innerText = currNumber;
+    if (activeOperation != null) {
+        preState.innerText = preNumber + activeOperation;
     } else {
-        screenPreviousCalculation.innerText = "";
+        preState.innerText = "";
     }
 }
 
 const addNumber = (number) => {
     if (number === "•" || number === ".") {
-        if (currentNumber.length === 0 || currentNumber.includes(".")) {
+        if (currNumber.length === 0 || currNumber.includes(".")) {
             return;
         }
         number = "."
     }
-    if (currentNumber === "0") {
-        currentNumber = "";
+    if (currNumber === "0") {
+        currNumber = "";
     }
-    currentNumber = currentNumber.toString() + number.toString();
+    currNumber = currNumber.toString() + number.toString();
 }
 
 const selectOperation = (operator) => {
-    if (currentNumber === "") {
+    if (currNumber === "") {
         return
     }
-    if (previousNumber !== "") {
-        const prev = screenPreviousCalculation.innerText;
-        if (currentNumber.toString() === "0" && prev[prev.length - 1] === "÷") {
-            alert("You can't divide by 0!")
+    if (preNumber !== "") {
+        const prev = preState.innerText;
+        if (currNumber.toString() === "0" && prev[prev.length - 1] === "÷") {
+            alert('Denominator must be other than zero!')
             clearAll();
             return;
         }
         operate();
     }
-    selectedOperator = operator;
-    previousNumber = currentNumber;
-    currentNumber = "";
+    activeOperation = operator;
+    preNumber = currNumber;
+    currNumber = "";
 }
 
 const clearAll = () => {
-    currentNumber = "";
-    previousNumber = "";
-    selectedOperator = undefined;
+    currNumber = "";
+    preNumber = "";
+    activeOperation = undefined;
 }
 
 
 const deleteOne = () => {
-    currentNumber = currentNumber.toString().slice(0, -1);
+    currNumber = currNumber.toString().slice(0, -1);
 }
 
-const takeFromKeyboard = (e) => {
+// Keyboard inputs 
+
+const keyboardEntry = (e) => {
     if (e.key >= 0 && e.key <= 9 || e.key === ".") {
         addNumber(e.key);
-        updateScreen();
+        updateStates();
     }
     if (e.key === "Backspace") {
         deleteOne();
-        updateScreen();
+        updateStates();
     }
     if (e.key === "Escape") {
         clearAll();
-        updateScreen();
+        updateStates();
     }
     if (e.key === "=") {
         operate();
-        updateScreen();
+        updateStates();
     }
     if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/") {
-        selectOperation(convertOperator(e.key))
-        updateScreen();
+        selectOperation(convertOpr(e.key))
+        updateStates();
     }
 }
 
-const convertOperator = (keyboardOperator) => {
-    if (keyboardOperator === "/") return "÷";
-    if (keyboardOperator === "*") return "×";
-    if (keyboardOperator === "-") return "-";
-    if (keyboardOperator === "+") return "+";
+const convertOpr = (keyboardOpr) => {
+    if (keyboardOpr === "/") return "÷";
+    if (keyboardOpr === "*") return "×";
+    if (keyboardOpr === "-") return "-";
+    if (keyboardOpr === "+") return "+";
 }
 
-document.addEventListener("keydown", takeFromKeyboard)
+document.addEventListener("keydown", keyboardEntry)
 
-buttonOperands.forEach((button) => {
+numberBtn.forEach((button) => {
     button.addEventListener("click", () => {
         addNumber(button.innerText);
-        updateScreen();
+        updateStates();
     })
 })
 
-buttonOperator.forEach((operator) => {
+operatorBtn.forEach((operator) => {
     operator.addEventListener("click", () => {
         selectOperation(operator.innerText);
-        updateScreen();
+        updateStates();
     })
 })
 
-clearButton.addEventListener("click", () => {
+clearBtn.addEventListener("click", () => {
     clearAll();
-    updateScreen();
+    updateStates();
 })
 
-deleteButton.addEventListener("click", () => {
+deleteBtn.addEventListener("click", () => {
     deleteOne();
-    updateScreen();
+    updateStates();
 });
 
-equalButton.addEventListener("click", () => {
+equalBtn.addEventListener("click", () => {
     operate();
-    updateScreen();
+    updateStates();
 })
