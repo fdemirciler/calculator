@@ -1,0 +1,1 @@
+Part of the Odin Project (https://www.theodinproject.com/), I've coded a simple calculator app for basic math operations.
