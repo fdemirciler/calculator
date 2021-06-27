@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+:root {
+    --container_blue: rgb(84, 149, 214);
+    --background_black: rgb(15, 15, 15);
+    --buttons_gray: rgb(48, 48, 48);
+    --screen_gray: #222;
+    --dark_white: rgb(185, 185, 185);
+}
+
+* {
+    box-sizing: border-box;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+}
+
+html {
+    overflow: hidden;
+}
+
+body {
+    background-color: var(--background_black);
+    margin: 0;
+    padding: 0;
+}
+
+#container {
+    margin: 50px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--container_blue);
+    width: 360px;
+    border-radius: 20px;
+}
+
+#calculator {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(4, 80px);
+    grid-template-rows: minmax(120px, auto) repeat(5, 80px);
+    gap: 5px;
+    margin: 25px;
+}
+
+#screen {
+    background-color: var(--screen_gray);
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 10px;
+    word-break: break-all;
+    word-wrap: break-word;
+    border-radius: 10px;
+}
+
+#previous-calculation {
+    font-size: 16px;
+    color: var(--dark_white)
+}
+
+button {
+    background-color: var(--buttons_gray);
+    border: 1px solid #666;
+    outline: none;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+button:hover {
+    background-color: #222;
+}
+
+
+/* Media queries */
+
+@media (max-width: 480px) {
+    #container {
+        width: 330px;
+    }
+    #calculator {
+        grid-template-columns: repeat(4, 70px);
+        grid-template-rows: minmax(100px, auto) repeat(5, 70px);
+    }
+}
