@@ -47,7 +47,7 @@ function divide(a, b) {
 const operate = () => {
     let calculations;
     if (!preNumber || !currNumber) {
-        return;
+        return 0;
     }
 
     const prev = parseFloat(preNumber);
@@ -65,7 +65,8 @@ const operate = () => {
         calculations = multiply(prev, curr);
 
     } else {
-        divide(prev, curr)
+        
+        calculations = divide(prev, curr)
 
     }
 
@@ -160,6 +161,8 @@ const convertOpr = (keyboardOpr) => {
 }
 
 document.addEventListener("keydown", keyboardEntry)
+
+// Event listeners
 
 numberBtn.forEach((button) => {
     button.addEventListener("click", () => {

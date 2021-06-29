@@ -1,10 +1,11 @@
 body {
-    background-color: rgb(240, 223, 240);
+    background-color: rgb(245, 241, 245);
     font-family: 'Orbitron', sans-serif;
+    overflow: hidden;
 }
 
 #container {
-    margin: 30px auto;
+    margin: 50px auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -43,11 +44,12 @@ body {
 
 #preState {
     font-size: 25px;
-    color: darkslategray
+    color: rgb(79, 85, 85)
 }
 
 #currState {
-    color: darkslategray;
+
+    color: rgb(72, 88, 88);
     font-size: 50px;
     height: 60px;
 }
@@ -74,3 +76,13 @@ button:hover {
     outline: none;
     cursor: pointer;
 }
+
+p {
+font-family: Arial, Helvetica, sans-serif;
+text-align: center;
+margin-bottom: 0;
+color: rgb(79, 85, 85);
+font-size: small;
+
+}
+
